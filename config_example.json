@@ -1,5 +1,5 @@
 {
   "__comment":"Example config, please copy and paste this as config.json",
   "prefix": "Enter the prefix you wish to use, such as --",
-  "token": "Enter your User Token, you can find that by searching "Discord User Token""
+  "token": "Enter your User Token, you can find that by searching 'Discord User Token'"
 }
