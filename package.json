@@ -1,19 +1,30 @@
 {
-  "name": "mythicalselfbot",
+  "name": "mythical-selfbot",
   "version": "1.0.0",
   "description": "A Mythical Selfbot for Discord",
   "main": "bot.js",
   "scripts": {
-    "test": "node bot.js",
-    "start": "node bot.js"
+    "nm": "nodemon --harmony bot.js",
+    "test": "node --harmony bot.js",
+    "start": "node --harmony bot.js"
   },
-  "author": "Thunder33345, forked off HimbeersaftLP",
-  "license": "dunno ¯\\_(ツ)_/¯",
+  "author": "Thunder33345",
+  "fork": "HimbeersaftLP",
+  "contributors": {
+      "NFGamerMC [hello@nfgamermc.com] (https://nfgamermc.com)"
+  },
+  "license": "ISC",
   "dependencies": {
+    "discord.js": "^11.1.0",
+    "erlpack": "github:hammerandchisel/erlpack",
+    "node-opus": "^0.2.6",
+    "uws": "^0.14.5"
+  },
+    "devDependencies": {
     "discord.js": "^11.1.0",
     "erlpack": "github:hammerandchisel/erlpack",
     "node-opus": "^0.2.6",
     "nodemon": "^1.11.0",
     "uws": "^0.14.5"
-  }
+    }
 }
