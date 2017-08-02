@@ -110,9 +110,9 @@ function getchans(guild,channelID){
   guild.channels.array().forEach(function(e, i, a){
    if(e.type=="text"){
      if (channelID) {
-       var name = "#"+e.name
-     }else {
        var name = e.toString()
+     }else {
+       var name = "#"+e.name
      }
      temp += name + " -> {" + e.topic + "}\n";
      //console.log(util.inspect(e));
