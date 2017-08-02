@@ -16,7 +16,7 @@ start(){
 	tmux send-keys -t $TMS:0 "cd $DIR" C-m
 	tmux send-keys -t $TMS:0 "echo Waiting for 3 seconds..." C-m
 	tmux send-keys -t $TMS:0 "sleep 3" C-m
-	tmux send-keys -t $TMS:0 "node bot.js" C-m
+	tmux send-keys -t $TMS:0 "node --harmony bot.js" C-m
 }
 
 stop(){
