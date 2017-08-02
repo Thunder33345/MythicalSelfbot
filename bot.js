@@ -24,7 +24,7 @@ bot.on('ready', () => {
 bot.on('message', msg => {
   if (msg.author.id !== bot.user.id) return;
 
-  if (msg.content.startsWith('..eval')){// TODO: better command handling
+  if (msg.content.startsWith(prefix + 'eval')){// TODO: better command handling
     var code = msg.content.substr(7);
     try {
       let evaled = eval(code);
@@ -46,7 +46,7 @@ bot.on('message', msg => {
       // TODO: .catch handle message with over 2k chars
     }
   }else
-  if(msg.content.startsWith('..dumptxt')){
+  if(msg.content.startsWith(prefix + 'dumptxt')){
     temp = "==="+msg.guild.name+"===\n"
     temp += getchans(msg.guild,true);
     msg.channel.send(temp);
@@ -57,14 +57,14 @@ bot.on('message', msg => {
    msg.delete();
   console.log(temp);
   }else
-  if(msg.content.startsWith('..ping')){
+  if(msg.content.startsWith(prefix + 'ping')){
     var embed = getEmbed(':ping_pong: Ping!')
    msg.channel.send("",{embed:embed}).then(
      m => m.edit("",{embed: getEmbed(':ping_pong: Pong!',"Latency is "+(m.createdTimestamp - msg.createdTimestamp)+"ms\nAPI Latency is "+bot.ping +"ms")
      })
    );
  } else
- if (msg.content.startsWith('..serverinfo')) {
+ if (msg.content.startsWith(prefix + 'serverinfo')) {
    var guild = msg.guild
    var user = guild.owner.user
    var txt = ""
@@ -74,17 +74,17 @@ bot.on('message', msg => {
    txt += "Channels: "+guild.channels.array().length+"\n"
    txt += "Roles: "+guild.roles.array().length+"\n"
    txt += "Region: "+guild.region+"\n"
-   txt += "created At: "+guild.createdAt+"\n"
+   txt += "Created at: "+guild.createdAt+"\n"
    msg.channel.send("",{embed:
      getEmbed(title,txt)//TODO: icon maybe
    }
  )
  } else
- if(msg.content.startsWith('..embedmode')){
+ if(msg.content.startsWith(prefix + 'embedmode')){
    if(emode == true){ emode = false; msg.edit('Embed mode disabled');}
    else if(emode == false){ emode = true; msg.edit('Embed mode enabled');}
  }else
- if(msg.content.startsWith('..embed')){
+ if(msg.content.startsWith(prefix +'embed')){
    msg.edit("", { embed: new Discord.RichEmbed().setDescription(msg.content.substr(8))});
   }else
   if(emode){
@@ -102,7 +102,7 @@ if(firstrun == 1){
     });
   firstrun = 0;
 }else{
-  console.log("Not logging in again for preventing bot token reset!");
+  console.log("Login Process Stoped to prevent token reset.");
 }
 
 function getchans(guild,channelID){
