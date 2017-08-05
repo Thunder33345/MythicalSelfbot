@@ -23,9 +23,9 @@ bot.on('ready', () => {
 
 bot.on('message', msg => {
   if (msg.author.id !== bot.user.id) return;
-  if (S(message.content).startsWith('..')) {
+  if (S(message.content).startsWith(config.prefix)) {
     var cmd = message.content.split(" ")[0];
-    cmd = S(cmd).chompLeft('..').s;
+    cmd = S(cmd).chompLeft(config.prefix).s;
     var args = message.content.split(" ").slice(1);
 
     switch (cmd) {
