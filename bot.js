@@ -25,7 +25,7 @@ bot.on('message', msg => {
   if (msg.author.id !== bot.user.id) return;
   if (S(message.content).startsWith(config.prefix)) {
     var splitmsg = message.content.split(" ");
-    cmd = S(splitmsg[0]).chompLeft(config.prefix).s;
+    var cmd = S(splitmsg[0]).chompLeft(config.prefix).s;
     var args = splitmsg.slice(1);
 
     switch (cmd) {
