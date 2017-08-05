@@ -24,9 +24,9 @@ bot.on('ready', () => {
 bot.on('message', msg => {
   if (msg.author.id !== bot.user.id) return;
   if (S(message.content).startsWith(config.prefix)) {
-    var cmd = message.content.split(" ")[0];
-    cmd = S(cmd).chompLeft(config.prefix).s;
-    var args = message.content.split(" ").slice(1);
+    var splitmsg = message.content.split(" ");
+    cmd = S(splitmsg[0]).chompLeft(config.prefix).s;
+    var args = splitmsg.slice(1);
 
     switch (cmd) {
       case 'eval':
