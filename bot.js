@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 const util = require('util');
+var S = require('string');
 const config = require('./config.json');
 
 var readyspam = 0;
@@ -23,8 +24,8 @@ bot.on('ready', function() {
 
 bot.on('message', function(msg) {
   if (msg.author.id !== bot.user.id) return;
-  if (S(message.content).startsWith(config.prefix)) {
-    var splitmsg = message.content.split(" ");
+  if (S(msg.content).startsWith(config.prefix)) {
+    var splitmsg = msg.content.split(" ");
     var cmd = S(splitmsg[0]).chompLeft(config.prefix).s;
     var args = splitmsg.slice(1);
 
@@ -57,7 +58,7 @@ bot.on('message', function(msg) {
         msg.channel.send(temp);
         break;
       case 'ldumptxt':
-        temp = "===" + msg.guild.name + "===";
+        temp = "===" + msg.guild.name + "===\n";
         temp += getchans(msg.guild, false);
         msg.delete();
         console.log(temp);
@@ -143,7 +144,7 @@ function getchans(guild, channelID) {
   return temp
 }
 
-function spamLog(msg, times) {
+function spamLog(msg, times = 10) {
   var line = '-';
   msg.channel.send('>').then(function(amsg) {
     var i = 1;
