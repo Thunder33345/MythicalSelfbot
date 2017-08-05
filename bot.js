@@ -101,6 +101,9 @@ bot.on('message', msg => {
           embed: getEmbed(false, args.join(' '))
         });
         break;
+      case 'spamlog':
+        spamLog(msg, args[0]);
+        break;
     }
   } else {
     if (emode) {
@@ -138,6 +141,21 @@ function getchans(guild, channelID) {
     }
   });
   return temp
+}
+
+function spamLog(msg, times) {
+  var line = '-';
+  msg.channel.send('>').then(function(amsg) {
+    var i = 1;
+    var ival = bot.setInterval(function() {
+      amsg.edit(line.repeat(i) + '>');
+      i += 1;
+      if (i >= times) {
+        bot.clearInterval(ival);
+        msg.channel.send('Finished');
+      }
+    }, 1000);
+  });
 }
 
 function getEmbed(title, description = false, colour = true) {
