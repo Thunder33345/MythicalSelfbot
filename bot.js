@@ -63,12 +63,12 @@ bot.on('message', msg => {
         console.log(temp);
         break;
       case 'ping':
-        var embed = getEmbed('?? Ping!');
+        var embed = getEmbed('🏓 Ping!');
         msg.channel.send("", {
           embed: embed
         }).then(
           m => m.edit("", {
-            embed: getEmbed('?? Pong!', 'Latency is ' + (m.createdTimestamp - msg.createdTimestamp) + 'ms\nAPI Latency is ' + bot.ping + ' ms');
+            embed: getEmbed('🏓 Pong!', 'Latency is ' + (m.createdTimestamp - msg.createdTimestamp) + 'ms\nAPI Latency is ' + bot.ping + ' ms');
           })
         );
         break;
