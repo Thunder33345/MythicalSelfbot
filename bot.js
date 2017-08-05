@@ -1,14 +1,14 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
-const util = require('util')
-const config = require('./config.json')
+const util = require('util');
+const config = require('./config.json');
 
 var readyspam = 0;
 var firstrun = 1;
 var emode = false;
 var token = config.token;
 
-bot.on('ready', () => {
+bot.on('ready', function() {
   console.log('Everything connected!');
   if (readyspam == 0) {
     readyspam = 1;
@@ -21,7 +21,7 @@ bot.on('ready', () => {
   }
 });
 
-bot.on('message', msg => {
+bot.on('message', function(msg) {
   if (msg.author.id !== bot.user.id) return;
   if (S(message.content).startsWith(config.prefix)) {
     var splitmsg = message.content.split(" ");
@@ -45,19 +45,19 @@ bot.on('message', msg => {
           }
         } catch (err) {
           if (err !== null && typeof err === 'object') {
-            err = util.inspect(err)
+            err = util.inspect(err);
           }
           msg.channel.send(":x: Error!\n\`\`\`\n" + err + "\n\`\`\`").then(m => m.delete(60000));
           // TODO: .catch handle message with over 2k chars
         }
         break;
       case 'dumptxt':
-        temp = "===" + msg.guild.name + "===\n"
+        temp = "===" + msg.guild.name + "===\n";
         temp += getchans(msg.guild, true);
         msg.channel.send(temp);
         break;
       case 'ldumptxt':
-        temp = "===" + msg.guild.name + "==="
+        temp = "===" + msg.guild.name + "===";
         temp += getchans(msg.guild, false);
         msg.delete();
         console.log(temp);
@@ -68,23 +68,23 @@ bot.on('message', msg => {
           embed: embed
         }).then(
           m => m.edit("", {
-            embed: getEmbed(':ping_pong: Pong!', 'Latency is ' + (m.createdTimestamp - msg.createdTimestamp) + 'ms\nAPI Latency is ' + bot.ping + ' ms');
+            embed: getEmbed(':ping_pong: Pong!', 'Latency is ' + (m.createdTimestamp - msg.createdTimestamp) + 'ms\nAPI Latency is ' + bot.ping + ' ms')
           })
         );
         break;
       case 'serverinfo':
-        var guild = msg.guild
-        var user = guild.owner.user
-        var txt = ""
-        title = "Name: " + guild.name + "\n"
-        txt += "Owner: " + user.username + "#" + user.discriminator + " (" + user.id + ")\n"
-        txt += "Member Count: " + guild.memberCount + "\n"
-        txt += "Channels: " + guild.channels.array().length + "\n"
-        txt += "Roles: " + guild.roles.array().length + "\n"
-        txt += "Region: " + guild.region + "\n"
-        txt += "created At: " + guild.createdAt + "\n"
+        var guild = msg.guild;
+        var user = guild.owner.user;
+        var txt = "";
+        title = "Name: " + guild.name + "\n";
+        txt += "Owner: " + user.username + "#" + user.discriminator + " (" + user.id + ")\n";
+        txt += "Member Count: " + guild.memberCount + "\n";
+        txt += "Channels: " + guild.channels.array().length + "\n";
+        txt += "Roles: " + guild.roles.array().length + "\n";
+        txt += "Region: " + guild.region + "\n";
+        txt += "created At: " + guild.createdAt + "\n";
         msg.channel.send("", {
-          embed: getEmbed(title, txt) //TODO: icon maybe
+          embed: getEmbed(title, txt).setThumbnail(guild.iconURL)
         });
         break;
       case 'embedmode':
@@ -132,9 +132,9 @@ function getchans(guild, channelID) {
   guild.channels.array().forEach(function(e, i, a) {
     if (e.type == "text") {
       if (channelID) {
-        var name = e.toString()
+        var name = e.toString();
       } else {
-        var name = "#" + e.name
+        var name = "#" + e.name;
       }
       temp += name + " -> {" + e.topic + "}\n";
       //console.log(util.inspect(e));
