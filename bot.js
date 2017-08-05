@@ -98,14 +98,14 @@ bot.on('message', msg => {
         break;
       case 'embed':
         msg.edit("", {
-          embed: new Discord.RichEmbed().setDescription(args.join(' '))
+          embed: getEmbed(false, args.join(' '))
         });
         break;
     }
   } else {
     if (emode) {
       msg.edit("", {
-        embed: new Discord.RichEmbed().setDescription(msg.content)
+        embed: getEmbed(false, msg.content)
       });
     }
   }
