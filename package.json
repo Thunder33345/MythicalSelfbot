@@ -7,13 +7,16 @@
     "test": "node bot.js",
     "start": "node bot.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Thunder33345/MythicalSelfbot.git"
+  },
   "author": "Thunder33345, forked off HimbeersaftLP",
   "license": "dunno ¯\\_(ツ)_/¯",
   "dependencies": {
     "discord.js": "^11.1.0",
     "erlpack": "github:hammerandchisel/erlpack",
-    "node-opus": "^0.2.6",
-    "nodemon": "^1.11.0",
-    "uws": "^0.14.5"
+    "uws": "^0.14.5",
+    "string": "^3.3.3"
   }
 }

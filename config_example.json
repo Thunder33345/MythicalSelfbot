@@ -1,7 +1,6 @@
 {
   "__comment":"Example config, please copy and paste this as config.json",
   "prefix": "..",
-  "__comment":"TODO feature",
 
   "token": "Your Discord bot accounts token",
 }
