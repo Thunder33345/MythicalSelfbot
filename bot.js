@@ -11,7 +11,7 @@ var token = config.token;
 
 bot.on('ready', function() {
   console.log('Everything connected!');
-  if (readyspam == 0) {
+  if (readyspam === 0) {
     readyspam = 1;
     setTimeout(function() {
       readyspam = 0;
@@ -34,7 +34,7 @@ bot.on('message', function(msg) {
         var code = args.join(' ');
         try {
           var evaled = eval(code);
-          if (evaled === token || evaled == "token" || evaled.toString().indexOf(token) != -1 || evaled.toString().indexOf("token") != -1) {
+          if (evaled === token || evaled === "token" || evaled.toString().indexOf(token) !== -1 || evaled.toString().indexOf("token") !== -1) {
             evaled = 'Don\'t eval your token, that is... Hmm, bad.';
             msg.delete();
           }
@@ -88,10 +88,10 @@ bot.on('message', function(msg) {
         });
         break;
       case 'embedmode':
-        if (emode == true) {
+        if (emode === true) {
           emode = false;
           msg.edit('Embed mode disabled');
-        } else if (emode == false) {
+        } else if (emode === false) {
           emode = true;
           msg.edit('Embed mode enabled');
         }
@@ -114,7 +114,7 @@ bot.on('message', function(msg) {
   }
 });
 
-if (firstrun == 1) {
+if (firstrun === 1) {
   bot.login(token)
     .then(function(r) {
       console.log("Login successful! " + r);
@@ -130,7 +130,7 @@ if (firstrun == 1) {
 function getchans(guild, channelID) {
   var temp = "";
   guild.channels.array().forEach(function(e, i, a) {
-    if (e.type == "text") {
+    if (e.type === "text") {
       if (channelID) {
         var name = e.toString();
       } else {
@@ -159,7 +159,7 @@ function spamLog(msg, times = 10) {
 }
 
 function getEmbed(title, description = false, colour = true) {
-  var embed = new Discord.RichEmbed()
+  var embed = new Discord.RichEmbed();
   if (title !== false) {
     embed.setTitle(title)
   }
