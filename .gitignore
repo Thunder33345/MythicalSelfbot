@@ -1,4 +1,8 @@
 #Gitnore file
+#Secrets
 config.json
+#Node NPMs
 node_modules/*
 package-lock.json
+#IDE
+.idea/
