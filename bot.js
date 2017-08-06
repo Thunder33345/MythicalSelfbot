@@ -41,7 +41,7 @@ bot.on('message', function(msg) {
           pro = msg.channel.send("\`\`\`\n" + evaled.toString() + "\n\`\`\`");
           // TODO: .catch handle message with over 2k chars
           if(S(evaled.toString()).startsWith('[object')){
-            pro.then(m => m.delete(5000));
+            pro.then(m => m.delete(35000));
           }
         } catch (err) {
           if (err !== null && typeof err === 'object') {
