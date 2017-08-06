@@ -9,11 +9,11 @@ var firstrun = 1;
 var emode = false;
 var token = config.token;
 
-bot.on('ready', function() {
+bot.on('ready', function () {
   console.log('Everything connected!');
   if (readyspam === 0) {
     readyspam = 1;
-    setTimeout(function() {
+    setTimeout(function () {
       readyspam = 0;
     }, 3000);
   } else {
@@ -22,7 +22,7 @@ bot.on('ready', function() {
   }
 });
 
-bot.on('message', function(msg) {
+bot.on('message', function (msg) {
   if (msg.author.id !== bot.user.id) return;
   if (S(msg.content).startsWith(config.prefix)) {
     var splitmsg = msg.content.split(" ");
@@ -40,14 +40,18 @@ bot.on('message', function(msg) {
           }
           pro = msg.channel.send("\`\`\`\n" + evaled.toString() + "\n\`\`\`");
           // TODO: .catch handle message with over 2k chars
-          if(S(evaled.toString()).startsWith('[object')){
-            pro.then(m => m.delete(35000));
+          if (S(evaled.toString()).startsWith('[object')) {
+            pro.then(m => m.delete(35000)
+          )
+            ;
           }
         } catch (err) {
           if (err !== null && typeof err === 'object') {
             err = util.inspect(err);
           }
-          msg.channel.send(":x: Error!\n\`\`\`\n" + err + "\n\`\`\`").then(m => m.delete(60000));
+          msg.channel.send(":x: Error!\n\`\`\`\n" + err + "\n\`\`\`").then(m => m.delete(60000)
+        )
+          ;
           // TODO: .catch handle message with over 2k chars
         }
         break;
@@ -63,29 +67,58 @@ bot.on('message', function(msg) {
         console.log(temp);
         break;
       case 'ping':
-        var embed = getEmbed(':ping_pong: Ping!');
-        msg.channel.send("", {
-          embed: embed
-        }).then(
-          m => m.edit("", {
+        if (hasPermission(msg, 'EMBED_LINKS')) {
+          var embed = getEmbed(':ping_pong: Ping!');
+          msg.channel.send("", {
+            embed: embed
+          }).then(
+            m => m.edit("", {
             embed: getEmbed(':ping_pong: Pong!', 'Latency is ' + (m.createdTimestamp - msg.createdTimestamp) + 'ms\nAPI Latency is ' + bot.ping + ' ms')
           })
-        );
+        )
+        } else {
+          msg.channel.send(':ping_pong: Ping!').then(
+            m => m.edit(':ping_pong: Pong!\nLatency is ' + (m.createdTimestamp - msg.createdTimestamp) + 'ms\nAPI Latency is ' + bot.ping + ' ms')
+        )
+        }
+        break;
+      case "pingtext":
+      case "pingtxt"://hack: cleanup and merge into ping cmd by checking for txt on end
+        msg.channel.send(':ping_pong: Ping!').then(
+          m => m.edit(':ping_pong: Pong!\nLatency is ' + (m.createdTimestamp - msg.createdTimestamp) + 'ms\nAPI Latency is ' + bot.ping + ' ms')
+      )
         break;
       case 'serverinfo':
         var guild = msg.guild;
         var user = guild.owner.user;
         var txt = "";
-        title = "Name: " + guild.name + "\n";
+        var title = "Name: " + guild.name + "\n";
         txt += "Owner: " + user.username + "#" + user.discriminator + " (" + user.id + ")\n";
         txt += "Member Count: " + guild.memberCount + "\n";
         txt += "Channels: " + guild.channels.array().length + "\n";
         txt += "Roles: " + guild.roles.array().length + "\n";
         txt += "Region: " + guild.region + "\n";
         txt += "created At: " + guild.createdAt + "\n";
-        msg.channel.send("", {
-          embed: getEmbed(title, txt).setThumbnail(guild.iconURL)
-        });
+        if (hasPermission(msg, 'EMBED_LINKS')) {
+          msg.channel.send("", {
+            embed: getEmbed(title, txt).setThumbnail(guild.iconURL)
+          });
+        } else {
+          msg.channel.send(title + "\n" + txt)
+        }
+        break;
+      case 'serverinfotxt'://hack: cleanup and merge into ping cmd by checking for txt on end
+        var guild = msg.guild;
+        var user = guild.owner.user;
+        var txt = "";
+        var title = "Name: " + guild.name + "\n";
+        txt += "Owner: " + user.username + "#" + user.discriminator + " (" + user.id + ")\n";
+        txt += "Member Count: " + guild.memberCount + "\n";
+        txt += "Channels: " + guild.channels.array().length + "\n";
+        txt += "Roles: " + guild.roles.array().length + "\n";
+        txt += "Region: " + guild.region + "\n";
+        txt += "created At: " + guild.createdAt + "\n";
+        msg.channel.send(title + txt);
         break;
       case 'embedmode':
         if (emode === true) {
@@ -116,10 +149,10 @@ bot.on('message', function(msg) {
 
 if (firstrun === 1) {
   bot.login(token)
-    .then(function(r) {
+    .then(function (r) {
       console.log("Login successful! " + r);
     })
-    .catch(function(r) {
+    .catch(function (r) {
       console.error("Login not successful! " + r);
     });
   firstrun = 0;
@@ -129,7 +162,7 @@ if (firstrun === 1) {
 
 function getchans(guild, channelID) {
   var temp = "";
-  guild.channels.array().forEach(function(e, i, a) {
+  guild.channels.array().forEach(function (e, i, a) {
     if (e.type === "text") {
       if (channelID) {
         var name = e.toString();
@@ -145,9 +178,9 @@ function getchans(guild, channelID) {
 
 function spamLog(msg, times = 10) {
   var line = '-';
-  msg.channel.send('>').then(function(amsg) {
+  msg.channel.send('>').then(function (amsg) {
     var i = 1;
-    var ival = bot.setInterval(function() {
+    var ival = bot.setInterval(function () {
       amsg.edit(line.repeat(i) + '>');
       i += 1;
       if (i >= times) {
@@ -172,4 +205,8 @@ function getEmbed(title, description = false, colour = true) {
     embed.setColor(colour)
   }
   return embed;
+}
+
+function hasPermission(msg, perm) {
+  return msg.channel.permissionsFor(msg.member).has(perm);
 }
