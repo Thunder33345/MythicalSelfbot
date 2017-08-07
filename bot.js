@@ -8,7 +8,14 @@ var readyspam = 0;
 var firstrun = 1;
 var emode = false;
 var token = config.token;
+var quoteStatus = false;
+var quoteReaction = false;
+var quoteHolder = false;
 
+if (typeof config.quote !== 'undefined') {
+  quoteStatus = true;
+  quoteReaction = config.quote;
+}
 bot.on('ready', function () {
   console.log('Everything connected!');
   if (readyspam === 0) {
@@ -41,16 +48,14 @@ bot.on('message', function (msg) {
           pro = msg.channel.send("\`\`\`\n" + evaled.toString() + "\n\`\`\`");
           // TODO: .catch handle message with over 2k chars
           if (S(evaled.toString()).startsWith('[object')) {
-            pro.then(m => m.delete(35000)
-          )
-            ;
+            pro.then(m => m.delete(35000))
           }
         } catch (err) {
           if (err !== null && typeof err === 'object') {
             err = util.inspect(err);
           }
           msg.channel.send(":x: Error!\n\`\`\`\n" + err + "\n\`\`\`").then(m => m.delete(60000)
-        )
+          )
           ;
           // TODO: .catch handle message with over 2k chars
         }
@@ -73,20 +78,20 @@ bot.on('message', function (msg) {
             embed: embed
           }).then(
             m => m.edit("", {
-            embed: getEmbed(':ping_pong: Pong!', 'Latency is ' + (m.createdTimestamp - msg.createdTimestamp) + 'ms\nAPI Latency is ' + bot.ping + ' ms')
-          })
-        )
+              embed: getEmbed(':ping_pong: Pong!', 'Latency is ' + (m.createdTimestamp - msg.createdTimestamp) + 'ms\nAPI Latency is ' + bot.ping + ' ms')
+            })
+          )
         } else {
           msg.channel.send(':ping_pong: Ping!').then(
             m => m.edit(':ping_pong: Pong!\nLatency is ' + (m.createdTimestamp - msg.createdTimestamp) + 'ms\nAPI Latency is ' + bot.ping + ' ms')
-        )
+          )
         }
         break;
       case "pingtext":
       case "pingtxt"://hack: cleanup and merge into ping cmd by checking for txt on end
         msg.channel.send(':ping_pong: Ping!').then(
           m => m.edit(':ping_pong: Pong!\nLatency is ' + (m.createdTimestamp - msg.createdTimestamp) + 'ms\nAPI Latency is ' + bot.ping + ' ms')
-      )
+        );
         break;
       case 'serverinfo':
         var guild = msg.guild;
@@ -137,6 +142,33 @@ bot.on('message', function (msg) {
       case 'spamlog':
         spamLog(msg, args[0]);
         break;
+      case'quote':
+        if (quoteHolder === false) {
+          msg.channel.send('Nothing has been quoted yet...');
+          break;
+        }
+        msg.delete().catch(function (err) {
+        });
+        author = quoteHolder.author;
+        if (hasPermission(msg, 'EMBED_LINKS')) {
+          msg.channel.send('', {
+            embed: new Discord.RichEmbed().setTitle('Quoting: ' + author.username)
+              .setAuthor(author.username + '#' + author.discriminator+ ' @' + quoteHolder.guild.name + '#' + msg.channel.name, author.avatarURL)
+              .setDescription(quoteHolder.content)
+          });
+        } else {//also need a way to do this like ..quotetxt e.e
+          msg.channel.send(
+            'Quote: ' + author.username + '#' + author.discriminator + ' @' + quoteHolder.guild.name + '#' + msg.channel.name +
+            '\n' + quoteHolder.cleanContent
+          )
+        }
+        msg.channel.send(args.join(' '));
+
+        break;
+      case'quotemode':
+        quoteStatus = !quoteStatus;
+        msg.edit('Quote Mode now: ' + quoteStatus);
+        break;//todo a way to get identifier of a emoji
     }
   } else {
     if (emode) {
@@ -146,7 +178,13 @@ bot.on('message', function (msg) {
     }
   }
 });
-
+bot.on('messageReactionAdd', (messageReaction, user) => {
+  if (quoteStatus !== true) return true;
+  if (messageReaction.me !== true || user.username !== bot.user.username) return true;
+  if (messageReaction.emoji.identifier !== quoteReaction) return true;
+  quoteHolder = messageReaction.message;
+  messageReaction.remove();
+});
 if (firstrun === 1) {
   bot.login(token)
     .then(function (r) {
@@ -160,14 +198,15 @@ if (firstrun === 1) {
   console.log("Not logging in again for preventing bot token reset!");
 }
 
+//Functions
 function getchans(guild, channelID) {
   var temp = "";
   guild.channels.array().forEach(function (e, i, a) {
     if (e.type === "text") {
       if (channelID) {
-        var name = e.toString();
+        let name = e.toString();
       } else {
-        var name = "#" + e.name;
+        let name = "#" + e.name;
       }
       temp += name + " -> {" + e.topic + "}\n";
       //console.log(util.inspect(e));
