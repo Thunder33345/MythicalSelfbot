@@ -124,6 +124,11 @@ bot.on('message', function(msg) {
         txt += "created At: " + guild.createdAt + "\n";
         msg.channel.send(title + txt);
         break;
+      case 'react':
+        if ( typeof msg.mentions.members.first() !== undefined && typeof msg.mentions.members.first().lastMessage !== "undefined") {
+          reactString(args.slice(1).join(' '), msg.mentions.members.first().lastMessage);
+        }
+        break;
       case 'embedmode':
         if (emode === true) {
           emode = false;
