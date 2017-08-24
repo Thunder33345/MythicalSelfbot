@@ -126,7 +126,12 @@ bot.on('message', function(msg) {
         break;
       case 'react':
         if ( typeof msg.mentions.members.first() !== undefined && typeof msg.mentions.members.first().lastMessage !== "undefined") {
-          reactString(args.slice(1).join(' '), msg.mentions.members.first().lastMessage);
+          var text = args.slice(1).join(' ');
+          if (text.length > 20 ) {
+            msg.edit(msg.content + " --> Too long (" + text.length + "/20) chars");
+          } else {
+            reactString(text, msg.mentions.members.first().lastMessage);
+          }
         }
         break;
       case 'embedmode':
