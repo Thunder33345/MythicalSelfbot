@@ -270,7 +270,6 @@ function reactString(text, msg) {
 
 function reactTo(msg, re, i = 0) {
   return new Promise(function(resolve, reject) {
-    console.log(re[i]);
     msg.react(re[i]).then(() => {
       if (i < re.length - 1) {
         i++;
