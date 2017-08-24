@@ -172,6 +172,11 @@ bot.on('message', function(msg) {
         quoteStatus = !quoteStatus;
         msg.edit('Quote Mode now: ' + quoteStatus);
         break; //todo a way to get identifier of a emoji
+      case 'stop':
+        msg.channel.send('Stopping...').then(() => {
+          process.exit(0);
+        });
+        break;
     }
   } else {
     if (emode) {
