@@ -1,6 +1,7 @@
 {
   "__comment":"Example config, please copy and paste this as config.json",
   "prefix": "..",
-
   "token": "Your Discord bot accounts token",
+  "quote": "identifyer of quoting emoji",
+  "__comment2":"need a better way to obtain identifyer (hard for unicode based builtin emoji)"
 }
