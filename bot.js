@@ -20,7 +20,11 @@ bot.on('ready', function () {
     console.error("Stopping due to client-ready spam, please restart the bot!");
     process.exit(1);
   }
-});
+  setTimeout(function(){
+   bot.user.setStatus(bot.user.presence.status);
+  },10000)
+}
+);
 
 bot.on('message', function (msg) {
   if (msg.author.id !== bot.user.id) return;

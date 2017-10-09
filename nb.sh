@@ -13,6 +13,7 @@ fi
 
 start(){
 	tmux list-session 2>&1 | grep -q "^$TMS:" || tmux new-session -s $TMS -d
+        tmux send-keys -t $TMS:0 "/bin/bash" C-m
 	tmux send-keys -t $TMS:0 "cd $DIR" C-m
 	tmux send-keys -t $TMS:0 "echo Waiting for 3 seconds..." C-m
 	tmux send-keys -t $TMS:0 "sleep 3" C-m
